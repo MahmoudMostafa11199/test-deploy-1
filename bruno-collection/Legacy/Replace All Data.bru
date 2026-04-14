@@ -1,0 +1,31 @@
+meta {
+  name: Replace All Data
+  type: http
+  seq: 2
+}
+
+put {
+  url: http://localhost:3000/api/data
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "bookmarks": [
+      {
+        "id": "1a6c2caa-cd1b-4240-9aac-7341d897a93f",
+        "url": "https://nodejs.org",
+        "title": "Node.js",
+        "tags": ["runtime", "javascript"],
+        "collectionId": "3e7604d5-c7de-4a46-9fec-0c2b3e5d86c8"
+      }
+    ],
+    "collections": [
+      {
+        "id": "3e7604d5-c7de-4a46-9fec-0c2b3e5d86c8",
+        "name": "Dev Tools"
+      }
+    ]
+  }
+}

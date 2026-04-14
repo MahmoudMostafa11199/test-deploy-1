@@ -1,0 +1,21 @@
+meta {
+  name: Update Collection
+  type: http
+  seq: 4
+}
+
+put {
+  url: http://localhost:3000/api/collections/{{collectionId}}
+  body: json
+  auth: none
+}
+
+vars:pre-request {
+  collectionId: 3e7604d5-c7de-4a46-9fec-0c2b3e5d86c8
+}
+
+body:json {
+  {
+    "name": "Dev Tools & Frameworks"
+  }
+}

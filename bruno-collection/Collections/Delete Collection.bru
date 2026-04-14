@@ -1,0 +1,15 @@
+meta {
+  name: Delete Collection
+  type: http
+  seq: 5
+}
+
+delete {
+  url: http://localhost:3000/api/collections/{{collectionId}}
+  body: none
+  auth: none
+}
+
+vars:pre-request {
+  collectionId: d5a2132e-a376-4f5c-be9e-5d67dadd42c3
+}

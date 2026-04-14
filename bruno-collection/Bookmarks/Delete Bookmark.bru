@@ -1,0 +1,15 @@
+meta {
+  name: Delete Bookmark
+  type: http
+  seq: 5
+}
+
+delete {
+  url: http://localhost:3000/api/bookmarks/{{bookmarkId}}
+  body: none
+  auth: none
+}
+
+vars:pre-request {
+  bookmarkId: 9846abb2-446e-4a14-8799-4b8555b3f274
+}

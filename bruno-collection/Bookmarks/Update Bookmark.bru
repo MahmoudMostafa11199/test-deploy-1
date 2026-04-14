@@ -1,0 +1,22 @@
+meta {
+  name: Update Bookmark
+  type: http
+  seq: 4
+}
+
+put {
+  url: http://localhost:3000/api/bookmarks/{{bookmarkId}}
+  body: json
+  auth: none
+}
+
+vars:pre-request {
+  bookmarkId: 1a6c2caa-cd1b-4240-9aac-7341d897a93f
+}
+
+body:json {
+  {
+    "title": "Updated Bookmark Title",
+    "tags": ["updated", "demo"]
+  }
+}

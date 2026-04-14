@@ -1,0 +1,15 @@
+meta {
+  name: Get Collection
+  type: http
+  seq: 2
+}
+
+get {
+  url: http://localhost:3000/api/collections/{{collectionId}}
+  body: none
+  auth: none
+}
+
+vars:pre-request {
+  collectionId: 3e7604d5-c7de-4a46-9fec-0c2b3e5d86c8
+}

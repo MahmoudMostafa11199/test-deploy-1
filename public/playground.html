@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fetch Playground — Curator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Figtree:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --font-display: "Fraunces", Georgia, serif;
+      --font-body: "Figtree", -apple-system, sans-serif;
+      --bg-page: #f8f6f1;
+      --bg-surface: #ffffff;
+      --bg-header: #292524;
+      --bg-input: #fdfcfa;
+      --text-primary: #1c1917;
+      --text-secondary: #78716c;
+      --text-tertiary: #a8a29e;
+      --text-inverse: #fafaf9;
+      --accent: #0d9488;
+      --accent-hover: #0f766e;
+      --accent-soft: #ccfbf1;
+      --border: #e7e5e4;
+      --red: #ef4444;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --shadow-sm: 0 1px 2px rgba(28, 25, 23, 0.04);
+      --shadow-card: 0 1px 3px rgba(28, 25, 23, 0.04), 0 0 0 1px rgba(28, 25, 23, 0.04);
+      --transition: 180ms ease;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: var(--font-body);
+      background: var(--bg-page);
+      color: var(--text-primary);
+      line-height: 1.6;
+      font-size: 15px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0 1.5rem;
+      height: 56px;
+      background: var(--bg-header);
+      color: var(--text-inverse);
+    }
+    header h1 {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 500;
+      opacity: 0.9;
+    }
+    header span {
+      font-size: 0.8rem;
+      opacity: 0.4;
+      margin-left: 0.25rem;
+    }
+
+    .container { max-width: 900px; margin: 0 auto; padding: 1.75rem 2rem; }
+
+    label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.35rem;
+    }
+
+    .row { display: flex; gap: 0.4rem; margin-bottom: 1.25rem; flex-wrap: wrap; }
+
+    select, input {
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      padding: 0.6rem 0.75rem;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      transition: all var(--transition);
+    }
+    select { cursor: pointer; }
+    input { flex: 1; min-width: 200px; }
+    select:focus, input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-soft);
+    }
+
+    #send {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.6rem 1.25rem;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+    #send:hover {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 3px 10px rgba(13, 148, 136, 0.2);
+    }
+
+    .section { margin-bottom: 1.25rem; }
+
+    textarea {
+      width: 100%;
+      min-height: 80px;
+      font-family: "Courier New", monospace;
+      font-size: 0.85rem;
+      padding: 0.75rem;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--bg-input);
+      color: var(--text-primary);
+      resize: vertical;
+      transition: border-color var(--transition);
+    }
+    textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-soft);
+    }
+    textarea::placeholder { color: var(--text-tertiary); }
+    textarea:disabled {
+      background: var(--bg-page);
+      color: var(--text-tertiary);
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+
+    .panels { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.25rem; }
+    .panel {
+      background: var(--bg-surface);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-card);
+      padding: 1rem 1.15rem;
+    }
+    .panel-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+    }
+
+    .status { font-size: 0.85rem; margin-bottom: 0.5rem; color: var(--text-secondary); }
+    .ok { color: #16a34a; font-weight: 600; }
+    .err { color: var(--red); font-weight: 600; }
+
+    pre {
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-family: "Courier New", monospace;
+      font-size: 0.82rem;
+      max-height: 400px;
+      overflow-y: auto;
+      line-height: 1.5;
+    }
+    #code-preview { color: var(--accent); }
+    #output { color: var(--text-primary); }
+
+    @media (max-width: 700px) {
+      .panels { grid-template-columns: 1fr; }
+      .container { padding: 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+      <rect x="2" y="4" width="20" height="26" rx="2" stroke="currentColor" stroke-width="2"/>
+      <rect x="10" y="2" width="20" height="26" rx="2" fill="currentColor" opacity="0.15" stroke="currentColor" stroke-width="2"/>
+    </svg>
+    <h1>Curator</h1>
+    <span>Fetch Playground</span>
+  </header>
+
+  <div class="container">
+    <div class="row">
+      <select id="method">
+        <option>GET</option>
+        <option>POST</option>
+        <option>PUT</option>
+        <option>DELETE</option>
+      </select>
+      <input type="text" id="url" value="http://localhost:3000/data" placeholder="URL" />
+      <button id="send">Send</button>
+    </div>
+
+    <div class="section">
+      <label>Headers (JSON)</label>
+      <textarea id="headers" rows="2" placeholder='{"Content-Type": "application/json"}'></textarea>
+    </div>
+
+    <div class="section" id="body-section">
+      <label>Body (JSON)</label>
+      <textarea id="body" rows="4" placeholder='{"bookmarks": [], "collections": []}'></textarea>
+    </div>
+
+    <div class="panels">
+      <div class="panel">
+        <div class="panel-label">Code</div>
+        <pre id="code-preview">// edit the fields above</pre>
+      </div>
+      <div class="panel">
+        <div class="panel-label">Response</div>
+        <div class="status" id="status">Press Send</div>
+        <pre id="output"></pre>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const methodEl = document.getElementById("method");
+    const urlEl = document.getElementById("url");
+    const headersEl = document.getElementById("headers");
+    const bodyEl = document.getElementById("body");
+    const bodySection = document.getElementById("body-section");
+    const statusEl = document.getElementById("status");
+    const outputEl = document.getElementById("output");
+    const codeEl = document.getElementById("code-preview");
+
+    function updateBodyState() {
+      const isGet = methodEl.value === "GET";
+      bodyEl.disabled = isGet;
+      if (isGet) bodyEl.placeholder = "Body not available for GET requests";
+      else bodyEl.placeholder = '{"bookmarks": [], "collections": []}';
+    }
+
+    function buildCode() {
+      const method = methodEl.value;
+      const url = urlEl.value;
+      const headers = headersEl.value.trim();
+      const body = bodyEl.value.trim();
+
+      let opts = [];
+      if (method !== "GET") opts.push(`  method: "${method}"`);
+
+      if (headers) {
+        try {
+          const h = JSON.parse(headers);
+          opts.push(`  headers: ${JSON.stringify(h)}`);
+        } catch {
+          opts.push(`  headers: ${headers}`);
+        }
+      }
+
+      if (body && method !== "GET") {
+        try {
+          JSON.parse(body);
+          opts.push(`  body: JSON.stringify(${body})`);
+        } catch {
+          opts.push(`  body: ${JSON.stringify(body)}`);
+        }
+      }
+
+      let code = "";
+      if (opts.length === 0) {
+        code = `const res = await fetch("${url}");\n`;
+      } else {
+        code = `const res = await fetch("${url}", {\n${opts.join(",\n")}\n});\n`;
+      }
+      code += `const data = await res.json();\nconsole.log(res.status, data);`;
+      return code;
+    }
+
+    function updatePreview() {
+      updateBodyState();
+      codeEl.textContent = buildCode();
+    }
+
+    methodEl.addEventListener("change", updatePreview);
+    urlEl.addEventListener("input", updatePreview);
+    headersEl.addEventListener("input", updatePreview);
+    bodyEl.addEventListener("input", updatePreview);
+    updatePreview();
+
+    document.getElementById("send").addEventListener("click", async () => {
+      statusEl.textContent = "Sending...";
+      outputEl.textContent = "";
+
+      const method = methodEl.value;
+      const options = { method };
+
+      const headersRaw = headersEl.value.trim();
+      if (headersRaw) {
+        try {
+          options.headers = JSON.parse(headersRaw);
+        } catch {
+          statusEl.innerHTML = '<span class="err">Invalid headers JSON</span>';
+          return;
+        }
+      }
+
+      const body = bodyEl.value.trim();
+      if (body && method !== "GET") {
+        options.body = body;
+      }
+
+      try {
+        const res = await fetch(urlEl.value, options);
+        const text = await res.text();
+
+        statusEl.innerHTML = `<span class="${res.ok ? "ok" : "err"}">${res.status} ${res.statusText}</span>`;
+
+        try {
+          outputEl.textContent = JSON.stringify(JSON.parse(text), null, 2);
+        } catch {
+          outputEl.textContent = text;
+        }
+      } catch (err) {
+        statusEl.innerHTML = '<span class="err">Network Error</span>';
+        outputEl.textContent = err.message;
+      }
+    });
+  </script>
+</body>
+</html>

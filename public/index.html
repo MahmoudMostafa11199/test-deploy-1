@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Curator — Bookmark Manager</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Figtree:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app">
+    <!-- Auth Screen -->
+    <div id="auth-screen" class="screen">
+      <div class="auth-container">
+        <div class="auth-brand">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <rect x="2" y="4" width="20" height="26" rx="2" stroke="currentColor" stroke-width="2"/>
+            <rect x="10" y="2" width="20" height="26" rx="2" fill="currentColor" opacity="0.15" stroke="currentColor" stroke-width="2"/>
+            <line x1="14" y1="10" x2="26" y2="10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <line x1="14" y1="15" x2="24" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <line x1="14" y1="20" x2="22" y2="20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <h1>Curator</h1>
+        </div>
+        <p class="auth-subtitle">Your personal reading collection</p>
+        <div class="tabs">
+          <button class="tab active" data-tab="login">Sign in</button>
+          <button class="tab" data-tab="signup">Create account</button>
+        </div>
+        <form id="login-form" class="auth-form">
+          <div class="input-group">
+            <label for="login-email">Email</label>
+            <input id="login-email" type="email" name="email" placeholder="you@example.com" required />
+          </div>
+          <div class="input-group">
+            <label for="login-password">Password</label>
+            <input id="login-password" type="password" name="password" placeholder="Enter password" required />
+          </div>
+          <button type="submit">Sign in</button>
+        </form>
+        <form id="signup-form" class="auth-form hidden">
+          <div class="input-group">
+            <label for="signup-username">Username</label>
+            <input id="signup-username" type="text" name="username" placeholder="Choose a username" required />
+          </div>
+          <div class="input-group">
+            <label for="signup-email">Email</label>
+            <input id="signup-email" type="email" name="email" placeholder="you@example.com" required />
+          </div>
+          <div class="input-group">
+            <label for="signup-password">Password</label>
+            <input id="signup-password" type="password" name="password" placeholder="Min 8 characters" required />
+          </div>
+          <button type="submit">Create account</button>
+        </form>
+        <p id="auth-error" class="error"></p>
+      </div>
+    </div>
+
+    <!-- Main Screen -->
+    <div id="main-screen" class="screen hidden">
+      <header>
+        <div class="header-left">
+          <svg class="header-logo" width="24" height="24" viewBox="0 0 32 32" fill="none">
+            <rect x="2" y="4" width="20" height="26" rx="2" stroke="currentColor" stroke-width="2"/>
+            <rect x="10" y="2" width="20" height="26" rx="2" fill="currentColor" opacity="0.15" stroke="currentColor" stroke-width="2"/>
+          </svg>
+          <h1>Curator</h1>
+        </div>
+        <div class="header-actions">
+          <span id="user-info"></span>
+          <button id="logout-btn" class="btn-header btn-ghost">Sign out</button>
+        </div>
+      </header>
+
+      <nav class="sidebar">
+        <div class="sidebar-section">
+          <h3 class="sidebar-label">Collections</h3>
+          <ul id="collection-list"></ul>
+        </div>
+        <div class="sidebar-footer">
+          <button id="new-collection-btn" class="btn-new-collection">
+            <span class="plus-icon">+</span> New collection
+          </button>
+          <div id="new-collection-form" class="hidden">
+            <input type="text" id="collection-name" placeholder="Collection name..." />
+            <button id="save-collection-btn" class="btn-small">Create</button>
+          </div>
+        </div>
+      </nav>
+
+      <main>
+        <!-- Search & Filter -->
+        <div class="toolbar">
+          <div class="search-group">
+            <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="search-input" placeholder="Search bookmarks..." />
+          </div>
+          <div class="search-group">
+            <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+            <input type="text" id="tag-filter" placeholder="Filter by tag..." />
+          </div>
+        </div>
+
+        <!-- Add Bookmark Form -->
+        <form id="bookmark-form" class="add-form">
+          <input type="url" name="url" placeholder="https://..." required />
+          <input type="text" name="title" placeholder="Title" required />
+          <input type="text" name="tags" placeholder="Tags (comma separated)" />
+          <button type="submit">
+            <span class="btn-label">Add</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+        </form>
+
+        <!-- Bookmarks List -->
+        <ul id="bookmark-list"></ul>
+      </main>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
